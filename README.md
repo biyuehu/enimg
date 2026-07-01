@@ -1,0 +1,24 @@
+# s
+
+[![Package Version](https://img.shields.io/hexpm/v/s)](https://hex.pm/packages/s)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/s/)
+
+```sh
+gleam add s@1
+```
+```gleam
+import s
+
+pub fn main() -> Nil {
+  // TODO: An example of the project in use
+}
+```
+
+Further documentation can be found at <https://hexdocs.pm/s>.
+
+## Development
+
+```sh
+gleam run   # Run the project
+gleam test  # Run the tests
+```
