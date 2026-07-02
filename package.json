@@ -1,6 +1,13 @@
 {
+  "name": "enimg",
+  "version": "1.0.0",
+  "description": "A tiny image encoding library, and designed for",
+  "license": "GPL-3.0-only",
+  "bin": {
+    "enimg": "bin.ts"
+  },
   "dependencies": {
-    "jimp": "^1.6.1",
+    "@jsquash/png": "^3.1.1",
     "lua-in-js": "^2.2.5",
     "wasmoon": "^1.16.0"
   },

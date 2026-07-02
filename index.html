@@ -9,87 +9,27 @@
 </head>
 
 <body>
-
   <div class="container">
-
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+      <div class="text">Processing...</div>
+    </div>
     <div class="preview">
       <img alt="preview" id="preview">
       <div id="placeholder">
         <div class="icon">🖼️</div>
-        <div class="text">暂无图片</div>
+        <div class="text">No image uploaded yet.</div>
       </div>
     </div>
-
     <div class="actions">
-      <button type="button" id="upload">上传</button>
-      <button type="button" id="encode">编码</button>
-      <button type="button" id="decode">解码</button>
-      <button type="button" id="download">下载</button>
+      <button type="button" id="upload">Upload</button>
+      <button type="button" id="encode">Encode</button>
+      <button type="button" id="decode">Decode</button>
+      <button type="button" id="download">Download</button>
     </div>
-
   </div>
-
   <input id="file" type="file" accept="image/*">
-
   <script type="module" src="src/ts/entry.ts"></script>
-  <script>
-    const preview = document.getElementById("preview");
-    const placeholder = document.getElementById("placeholder");
-    const fileInput = document.getElementById("file");
-
-    let buffer = null;
-    let previewUrl = null;
-
-    function showImage(blob) {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      previewUrl = URL.createObjectURL(blob);
-      preview.src = previewUrl;
-      preview.style.display = "block";
-      placeholder.style.display = "none";
-    }
-
-    document.getElementById("upload").onclick = () => {
-      fileInput.click();
-    };
-
-    fileInput.onchange = async () => {
-      const file = fileInput.files[0];
-      if (!file) return;
-      buffer = await file.arrayBuffer();
-      showImage(file);
-    };
-
-    document.getElementById("encode").onclick = async () => {
-      if (!buffer) return;
-      buffer = await window.encodeImage(buffer);
-      showImage(new Blob([buffer]));
-    };
-
-
-    document.getElementById("decode").onclick = async () => {
-      if (!buffer) return;
-      buffer = await window.decodeImage(buffer);
-      showImage(new Blob([buffer]));
-    };
-
-    document.getElementById("download").onclick = () => {
-      if (!buffer) return;
-      const blob = new Blob([buffer]);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "image.png";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-    };
-
-
-    window.encodeImage = async buffer => buffer;
-    window.decodeImage = async buffer => buffer;
-  </script>
-
 </body>
 
 </html>
