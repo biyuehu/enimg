@@ -3,4 +3,5 @@
 /build
 erl_crash.dump
 node_modules
-lua_build
+build
+test2.png
