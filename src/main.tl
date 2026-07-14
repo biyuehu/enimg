@@ -2,22 +2,89 @@ local async = require("async")
 local limp = require("limp")
 local enimg = require("enimg")
 local web = require("web")
+local utils = require("utils")
+
+local function el(tag: string, class: string | nil): web.Element
+  local e = web.create(tag)
+  if class ~= nil then
+    web.set_attr(e, "class", class)
+  end
+  return e
+end
+
+local function el_id(tag: string, id: string, class: string | nil): web.Element
+  local e = el(tag, class)
+  web.set_attr(e, "id", id)
+  return e
+end
+
+local function button(id: string, label: string): web.Element
+  local b = el_id("button", id, nil)
+  web.set_attr(b, "type", "button")
+  web.set_text(b, label)
+  return b
+end
+
+local entry = web.query("#teal-entry")
+if entry == nil then
+  web.console(" #teal-entry")
+  return
+end
+
+local container = el("div", "container")
+local loading = el_id("div", "loading", "loading hidden")
+local spinner = el("div", "spinner")
+web.append(loading, spinner)
+local loading_text = el("div", "text")
+web.set_text(loading_text, "Processing...")
+web.append(loading, loading_text)
+web.append(container, loading)
+
+local preview_wrap = el("div", "preview")
+local img = el_id("img", "preview", nil)
+web.set_attr(img, "alt", "preview")
+web.append(preview_wrap, img)
+
+local placeholder = el_id("div", "placeholder", nil)
+local icon = el("div", "icon")
+web.set_text(icon, utils.icon)
+web.append(placeholder, icon)
+local placeholder_text = el("div", "text")
+web.set_text(placeholder_text, "No image uploaded yet.")
+web.append(placeholder, placeholder_text)
+web.append(preview_wrap, placeholder)
+web.append(container, preview_wrap)
+
+local actions = el("div", "actions")
+web.append(actions, button("upload", "Upload"))
+web.append(actions, button("encode", "Encode"))
+web.append(actions, button("decode", "Decode"))
+web.append(actions, button("download", "Download"))
+web.append(container, actions)
+web.append(entry, container)
+
+local file_input = el_id("input", "file", nil)
+web.set_attr(file_input, "type", "file")
+web.set_attr(file_input, "accept", "image/*")
+web.append(entry, file_input)
+
+local footer = el("footer", "app-footer")
+local footer_line1 = el("div", "footer-line footer-line-teal")
+local footer_link = el("a", "footer-line-teal")
+web.set_attr(footer_link, "href", "https://github.com/biyuehu/enimg")
+web.set_attr(footer_link, "target", "_blank")
+web.set_attr(footer_link, "rel", "noopener noreferrer")
+web.set_text(footer_link, "enimg")
+web.append(footer_line1, footer_link)
+web.append(footer, footer_line1)
+local footer_line2 = el("div", "footer-line footer-line-sub")
+web.set_text(footer_line2, "By Arimura Sena | Teal + Vite + Bun")
+web.append(footer, footer_line2)
+web.append(entry, footer)
 
 local preview = web.query("#preview")
-local placeholder = web.query("#placeholder")
-local file_input = web.query("#file")
-local loading = web.query("#loading")
-
 local buffer: web.Object | nil = nil
 local preview_url: string | nil = nil
-
-local function set_loading(v: boolean)
-  if v then
-    web.set_attr(loading, "class", "loading")
-  else
-    web.set_attr(loading, "class", "loading hidden")
-  end
-end
 
 local function show_image(blob: web.Blob)
   if preview_url ~= nil then
@@ -41,11 +108,11 @@ web.on(file_input, "change", function()
   if file == nil then
     return
   end
-  set_loading(true)
+  utils.set_loading(true)
   async.next(web.array_buffer(file as web.Blob), function(data: any): nil
     buffer = data as web.Object
     show_image(file as web.Blob)
-    set_loading(false)
+    utils.set_loading(false)
   end)
 end)
 
@@ -53,27 +120,33 @@ web.on(web.query("#encode"), "click", function()
   if buffer == nil then
     return
   end
-  set_loading(true)
-  async.next(limp.read(buffer), function(img: limp.Image): nil
-    async.next(limp.write(enimg.encode_image(img)), function(data: any): nil
-      buffer = data as web.Object
-      show_image(web.new_blob(buffer))
-      set_loading(false)
+  utils.set_loading(true)
+  web.set_timeout(function()
+    async.next(limp.read(buffer), function(image: limp.Image): nil
+      async.next(limp.write(enimg.encode_image(image)), function(data: any): nil
+        buffer = data as web.Object
+        show_image(web.new_blob(buffer))
+        utils.set_loading(false)
+      end)
     end)
-  end)
-
+  end, 500)
 end)
 
 web.on(web.query("#decode"), "click", function()
   if buffer == nil then
     return
   end
-  async.next(limp.read(buffer), function(img: limp.Image): nil
-    async.next(limp.write(enimg.decode_image(img)), function(data: any): nil
-      buffer = data as web.Object
-      show_image(web.new_blob(buffer))
+  utils.set_loading(true)
+  web.set_timeout(function()
+    async.next(limp.read(buffer), function(image: limp.Image): nil
+      async.next(limp.write(enimg.decode_image(image)), function(data: any): nil
+        buffer = data as web.Object
+        show_image(web.new_blob(buffer))
+      utils.set_loading(false)
+      end)
     end)
-  end)
+  end, 500)
+
 end)
 
 web.on(web.query("#download"), "click", function()

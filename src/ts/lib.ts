@@ -2,7 +2,16 @@ import { decode, encode } from '@jsquash/png'
 import * as lua from 'lua-in-js'
 
 const utilsObject = {
-  gcd: (a: number, b: number): number => (b === 0 ? a : utilsObject.gcd(b, a % b))
+  gcd: (a: number, b: number): number => (b === 0 ? a : utilsObject.gcd(b, a % b)),
+  icon: '🖼️',
+  set_loading: (v: boolean) => {
+    const loading = document.querySelector('#loading')
+    if (v) {
+      loading?.classList.remove('hidden')
+    } else {
+      loading?.classList.add('hidden')
+    }
+  }
 }
 
 const utilsLib = new lua.Table(utilsObject)
@@ -11,14 +20,6 @@ const asyncLib = new lua.Table({
   next: <T, R>(promise: Promise<T>, callback: (data: T) => R) => promise.then((x) => callback(x)),
   catch: <R>(promise: Promise<unknown>, callback: (error: Error) => R) => promise.catch(callback),
   finally: <R>(promise: Promise<unknown>, callback: () => R) => promise.finally(callback)
-  /* 	solve: <T, R1, R2, R3>(
-    promise: Promise<T>,
-    handler: {
-      next?: (data: T) => R1;
-      catch?: (e: Error) => R2;
-      finally?: () => R3;
-    },
-  ) => promise.then(handler.next).catch(handler.catch).finally(handler.finally), */
 })
 
 const limpLib = new lua.Table({

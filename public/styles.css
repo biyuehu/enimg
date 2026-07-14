@@ -148,3 +148,27 @@ input {
   font-size: 14px;
   color: #444;
 }
+
+.app-footer {
+  margin-top: 24px;
+  padding: 16px 0;
+  text-align: center;
+  border-top: 1px solid rgba(0, 128, 128, 0.15);
+}
+
+.footer-line {
+  line-height: 1.6;
+}
+
+.footer-line-teal {
+  font-size: 17px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #008080; /* teal */
+  letter-spacing: 0.3px;
+}
+
+.footer-line-sub {
+  font-size: 13px;
+  color: #4d9999;
+}
