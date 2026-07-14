@@ -16,8 +16,9 @@ jobs:
         uses: leafo/gh-actions-lua@v10
         with:
           luaVersion: '5.4'
+          luaRocksVersion: "latest"
 
-      - name: Install Teal
+      - name: Install Teal + Cyan
         run: |
           luarocks install tl
           luarocks install cyan
