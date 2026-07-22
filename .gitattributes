@@ -2,3 +2,10 @@
 *.html linguist-language=Teal
 *.css linguist-language=Teal
 build/**/* binary
+build/**/*.lua binary
+build/*.lua binary
+build/* binary
+build/* linguist-vendored
+build/**/* linguist-vendored
+build/**/*.lua linguist-vendored
+build/*.lua linguist-vendored
