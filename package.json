@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A tiny image encoding library, and designed for",
   "license": "GPL-3.0-only",
+  "scripts": {
+    "dev": "vite",
+    "build": "cyan check src/main.tl && cyan build && vite build"
+  },
   "bin": {
     "mikoto": "bin.ts"
   },

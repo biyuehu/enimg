@@ -31,6 +31,4 @@ jobs:
       - name: Type check + Build
         run: |
           bun install
-          cyan check src/main.tl
-          cyan build
-          bun vite build
+          bun run build
