@@ -1,3 +1,4 @@
 *.tl linguist-language=Teal
 *.html linguist-language=Teal
 *.css linguist-language=Teal
+build/**/* binary

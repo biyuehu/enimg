@@ -1,8 +1,6 @@
 *.beam
 *.ez
-/build
 erl_crash.dump
 node_modules
-build
 test2.png
 dist

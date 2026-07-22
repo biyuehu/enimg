@@ -5,7 +5,8 @@
   "license": "GPL-3.0-only",
   "scripts": {
     "dev": "vite",
-    "build": "cyan check src/main.tl && cyan build && vite build"
+    "build:all": "cyan check src/main.tl && cyan build && vite build",
+    "build": "vite build"
   },
   "bin": {
     "mikoto": "bin.ts"
