@@ -1,6 +1,6 @@
 # Mikoto
 
-[![CI](https://github.com/biyuehu/mikoto/actions/workflows/ci.yml/badge.svg)](https://github.com/biyuehu/mikoto/actions/workflows/ci.yml)
+[![CI](https://github.com/biyuehu/mikoto/actions/workflows/ci.yml/badge.svg)](https://github.com/biyuehu/mikoto/actions/workflows/ci.yml) ![License](https://img.shields.io/badge/License-GPL--3.0-blue?style=flat-square)
 
 [👉 Demo 👈](https://mikoto-img.vercel.app/)
 
